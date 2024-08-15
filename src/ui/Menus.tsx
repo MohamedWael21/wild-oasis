@@ -20,15 +20,16 @@ interface MenuContextType {
 }
 
 interface MenusProps {
-  children: React.ReactElement[] | React.ReactElement;
+  children: React.ReactNode;
 }
 interface ButtonProps {
-  children: React.ReactElement[] | React.ReactElement | string;
+  children: React.ReactNode;
   icon: React.ReactElement;
   onClick?: () => void;
+  disabled?: boolean;
 }
 interface ListProps {
-  children: React.ReactElement[] | React.ReactElement;
+  children: React.ReactNode;
   id: number;
 }
 
@@ -129,8 +130,6 @@ const Toggle = ({ id }: ToggleProps) => {
         y: rec.y + rec.height + 8,
       });
     }
-    console.log("toggle");
-    console.log(openId);
     openId === 0 || openId !== id ? open(id) : close();
   };
   return (
@@ -156,7 +155,7 @@ const List = ({ id, children }: ListProps) => {
   );
 };
 
-const Button = ({ children, icon, onClick }: ButtonProps) => {
+const Button = ({ children, icon, onClick, disabled = false }: ButtonProps) => {
   const { close } = useContext(MenuContext) as MenuContextType;
   const handleClick = () => {
     onClick?.();
@@ -164,7 +163,7 @@ const Button = ({ children, icon, onClick }: ButtonProps) => {
   };
   return (
     <li>
-      <StyledButton onClick={handleClick}>
+      <StyledButton onClick={handleClick} disabled={disabled}>
         {icon}
         <span>{children}</span>
       </StyledButton>

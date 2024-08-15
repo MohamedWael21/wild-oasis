@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import React, { createContext, useContext } from "react";
 import styled from "styled-components";
 
 interface TableContextType {
@@ -6,12 +6,12 @@ interface TableContextType {
 }
 
 interface TableProps {
-  children: React.ReactElement[];
+  children: React.ReactNode;
   columns: string;
 }
 
 interface HeaderProps {
-  children: React.ReactElement[];
+  children: React.ReactNode;
 }
 
 interface CommonRowProps {
@@ -19,11 +19,11 @@ interface CommonRowProps {
 }
 
 interface RowProps {
-  children: React.ReactElement[];
+  children: React.ReactNode;
 }
 
 interface BodyProps {
-  children: React.ReactElement[];
+  children: React.ReactNode;
 }
 
 const StyledTable = styled.div`
@@ -108,7 +108,8 @@ const Row = ({ children }: RowProps) => {
 };
 
 const Body = ({ children }: BodyProps) => {
-  if (!children.length) return <Empty>No data to show at the moment</Empty>;
+  if (!(children as React.ReactElement[]).length)
+    return <Empty>No data to show at the moment</Empty>;
 
   return <StyledBody>{children}</StyledBody>;
 };

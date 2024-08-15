@@ -30,5 +30,13 @@ declare global {
   type QueryOptions<T> = {
     filter: QueryOption<T> | null;
     sortBy: QueryOption<T> | null;
+    page: number | null;
+  };
+
+  type UpdateBookingData = TablesUpdate<"bookings">;
+
+  type CheckInData = {
+    bookingId: number;
+    breakfast?: UpdateBookingData;
   };
 }

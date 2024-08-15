@@ -1,10 +1,14 @@
+import { ITEMS_PER_PAGE } from "../utils/constants";
 import supabase from "./supabase";
 
 export async function getBookings({
   filter,
   sortBy,
+  page,
 }: QueryOptions<"bookings">) {
-  let query = supabase.from("bookings").select("*, cabins(*), guests(*)");
+  let query = supabase
+    .from("bookings")
+    .select("*, cabins(*), guests(*)", { count: "exact" });
 
   if (filter) {
     query = query.eq(filter.field, filter.value);
@@ -14,10 +18,55 @@ export async function getBookings({
     query = query.order(sortBy.field, { ascending: sortBy.value === "asc" });
   }
 
-  const { data: bookings, error } = await query;
+  if (page) {
+    const from = (page - 1) * ITEMS_PER_PAGE;
+    const to = from + ITEMS_PER_PAGE - 1;
+    query = query.range(from, to);
+  }
+
+  const { data: bookings, error, count } = await query;
 
   if (error) {
     throw new Error("Bookings couldn't be loaded");
   }
-  return bookings;
+  return { bookings, count };
+}
+
+export async function getBooking(id: number) {
+  const { data: booking, error } = await supabase
+    .from("bookings")
+    .select("*, cabins(*), guests(*)")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    throw new Error("Booking couldn't be loaded");
+  }
+
+  return booking;
+}
+
+export async function updateBooking(
+  id: number,
+  updatedBooking: UpdateBookingData
+) {
+  const { error, data } = await supabase
+    .from("bookings")
+    .update(updatedBooking)
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    throw new Error("Booking couldn't be updated");
+  }
+  return data;
+}
+
+export async function deleteBooking(id: number) {
+  const { error } = await supabase.from("bookings").delete().eq("id", id);
+
+  if (error) {
+    throw new Error("Booking couldn't be deleted");
+  }
 }

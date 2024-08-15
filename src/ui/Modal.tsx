@@ -64,16 +64,16 @@ interface ModalContextType {
 }
 
 interface ModalProps {
-  children: React.ReactElement[];
+  children: React.ReactNode;
 }
 
 interface WindowProps {
-  children: React.ReactElement;
+  children: React.ReactNode;
   name: string;
 }
 
 interface OpenProps {
-  children: React.ReactElement;
+  children: React.ReactNode;
   opens: string;
 }
 
@@ -95,7 +95,9 @@ const Modal = ({ children }: ModalProps) => {
 const Open = ({ children, opens: windowOpenName }: OpenProps) => {
   const { open } = useContext(ModalContext) as ModalContextType;
 
-  return cloneElement(children, { onClick: () => open(windowOpenName) });
+  return cloneElement(children as React.ReactElement, {
+    onClick: () => open(windowOpenName),
+  });
 };
 
 const Window = ({ children, name }: WindowProps) => {
@@ -112,7 +114,11 @@ const Window = ({ children, name }: WindowProps) => {
           <HiXMark />
         </Button>
         <div>
-          <div>{cloneElement(children, { onCloseModal: close })}</div>
+          <div>
+            {cloneElement(children as React.ReactElement, {
+              onCloseModal: close,
+            })}
+          </div>
         </div>
       </StyledModal>
     </Overlay>
