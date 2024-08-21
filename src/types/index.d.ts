@@ -39,4 +39,20 @@ declare global {
     bookingId: number;
     breakfast?: UpdateBookingData;
   };
+
+  type LoginCredential = {
+    email: string;
+    password: string;
+  };
+
+  type SignupCredential = {
+    email: string;
+    password: string;
+    fullName: string;
+  };
+
+  type UserData = {
+    fullName: string;
+    avatar?: File | null;
+  };
 }
