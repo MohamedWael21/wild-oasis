@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import Logo from "./Logo";
 import MainNav from "./MainNav";
-import Uploader from "../seed/Uploader";
 
 const StyledSidebar = styled.div`
   background-color: var(--color-grey-0);
@@ -11,6 +10,10 @@ const StyledSidebar = styled.div`
   display: flex;
   flex-direction: column;
   gap: 3.2rem;
+
+  /* @media (max-width: 1200px) {
+    display: none;
+  } */
 `;
 
 const Sidebar = () => {
@@ -18,7 +21,6 @@ const Sidebar = () => {
     <StyledSidebar>
       <Logo />
       <MainNav />
-      <Uploader />
     </StyledSidebar>
   );
 };

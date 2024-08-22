@@ -122,6 +122,7 @@ const Toggle = ({ id }: ToggleProps) => {
     MenuContext
   ) as MenuContextType;
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.stopPropagation();
     const target = e.target as HTMLElement;
     const rec = target.closest("button")?.getBoundingClientRect();
     if (rec) {
@@ -144,7 +145,7 @@ const List = ({ id, children }: ListProps) => {
     MenuContext
   ) as MenuContextType;
 
-  const ref = useOutsideClick<HTMLUListElement>(close);
+  const ref = useOutsideClick<HTMLUListElement>(close, false);
 
   if (openId !== id) return;
 

@@ -17,6 +17,7 @@ import Booking from "./pages/Booking";
 import CheckIn from "./pages/CheckIn";
 import ProtectRoute from "./ui/ProtectRoute";
 import NewUsers from "./pages/NewUsers";
+import { DarkModeProvider } from "./context/DarkModeContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,40 +29,43 @@ const queryClient = new QueryClient({
 
 const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools />
-      <GlobalStyles />
-      <BrowserRouter>
-        <Routes>
-          <Route
-            element={
-              <ProtectRoute>
-                <AppLayout />
-              </ProtectRoute>
-            }
-          >
-            <Route index element={<Navigate replace to="/dashboard" />} />
-
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/bookings" element={<Bookings />} />
-            <Route path="/bookings/:bookingId" element={<Booking />} />
-            <Route path="/bookings/:bookingId/check-in" element={<CheckIn />} />
-            <Route path="/cabins" element={<Cabins />} />
-            <Route path="/users" element={<NewUsers />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/account" element={<Account />} />
-          </Route>
-
-          <Route path="/login" element={<Login />} />
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
-      </BrowserRouter>
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        toastClassName="toast"
-      />
-    </QueryClientProvider>
+    <DarkModeProvider>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools />
+        <GlobalStyles />
+        <BrowserRouter>
+          <Routes>
+            <Route
+              element={
+                <ProtectRoute>
+                  <AppLayout />
+                </ProtectRoute>
+              }
+            >
+              <Route index element={<Navigate replace to="/dashboard" />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/bookings" element={<Bookings />} />
+              <Route path="/bookings/:bookingId" element={<Booking />} />
+              <Route
+                path="/bookings/:bookingId/check-in"
+                element={<CheckIn />}
+              />
+              <Route path="/cabins" element={<Cabins />} />
+              <Route path="/users" element={<NewUsers />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/account" element={<Account />} />
+            </Route>
+            <Route path="/login" element={<Login />} />
+            <Route path="*" element={<PageNotFound />} />
+          </Routes>
+        </BrowserRouter>
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          toastClassName="toast"
+        />
+      </QueryClientProvider>
+    </DarkModeProvider>
   );
 };
 export default App;

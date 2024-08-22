@@ -51,18 +51,12 @@ const variations: { [key: string]: CSSProp } = {
 type ButtonProps = {
   size?: "small" | "medium" | "large";
   variation?: "primary" | "secondary" | "danger";
-  fullwidth?: boolean;
 };
 
 const Button = styled.button<ButtonProps>`
   border: none;
   border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-sm);
-  ${(props) =>
-    props.fullwidth &&
-    css`
-      width: 100%;
-    `}
   ${(props) => sizes[props.size || "medium"]}
   ${(props) => variations[props.variation || "primary"]}
 `;
@@ -70,7 +64,6 @@ const Button = styled.button<ButtonProps>`
 Button.defaultProps = {
   variation: "primary",
   size: "medium",
-  fullwidth: false,
 };
 
 export default Button;

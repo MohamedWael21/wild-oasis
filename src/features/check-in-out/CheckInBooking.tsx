@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { formatCurrency } from "../../utils/helpers";
 import useCheckIn from "./useCheckIn";
 import useSettings from "../settings/useSettings";
+import Empty from "../../ui/Empty";
 
 const Box = styled.div`
   /* Box */
@@ -40,8 +41,9 @@ function CheckInBooking() {
   const { checkIn, isCheckingIn } = useCheckIn();
   const { settings, isLoading: isLoadingSettings } = useSettings();
 
-  if (isLoading || !booking || isLoadingSettings || !settings)
-    return <Spinner />;
+  if (isLoading || isLoadingSettings || !settings) return <Spinner />;
+
+  if (!booking) return <Empty resourceName="Booking" />;
 
   const {
     id: bookingId,

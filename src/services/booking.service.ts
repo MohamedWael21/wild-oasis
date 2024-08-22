@@ -1,4 +1,5 @@
 import { ITEMS_PER_PAGE } from "../utils/constants";
+import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
 
 export async function getBookings({
@@ -69,4 +70,45 @@ export async function deleteBooking(id: number) {
   if (error) {
     throw new Error("Booking couldn't be deleted");
   }
+}
+
+export async function getBookingsAfterDate(date: string) {
+  const { data, error } = await supabase
+    .from("bookings")
+    .select("created_at, totalPrice, extraPrice")
+    .gte("created_at", date)
+    .lte("created_at", getToday({ end: true }));
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}
+
+export async function getStaysAfterDate(date: string) {
+  const { data, error } = await supabase
+    .from("bookings")
+    .select("*, guests(fullname)")
+    .gte("startDate", date)
+    .lte("startDate", getToday());
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}
+
+// Activity means that there is a check in or a check out today
+export async function getStaysTodayActivity(): Promise<TodayStaysActivities> {
+  const { data, error } = await supabase
+    .from("bookings")
+    .select("*, guests(fullname, nationality, countryFlag)")
+    .or(
+      `and(status.eq.unconfirmed,startDate.eq.${getToday()}),and(status.eq.checked-in,endDate.eq.${getToday()})`
+    )
+    .order("created_at");
+
+  if (error) {
+    console.error(error);
+    throw new Error("Bookings could not get loaded");
+  }
+  return data;
 }

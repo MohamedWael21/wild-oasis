@@ -11,7 +11,7 @@ export const formatDistanceFromNow = (dateStr: string) =>
     .replace("about ", "")
     .replace("in", "In");
 
-export const getToday = function (options: { end: boolean }) {
+export const getToday = function (options?: { end: boolean }) {
   const today = new Date();
 
   // This is necessary to compare with created_at from Supabase, because  it not at 0.0.0.0, so we need to set the date to be END of the day when we compare it with earlier dates

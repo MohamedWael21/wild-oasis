@@ -55,4 +55,13 @@ declare global {
     fullName: string;
     avatar?: File | null;
   };
+
+  type Activity = Tables<"bookings"> & {
+    guests: Pick<
+      Tables<"guests">,
+      "fullname" | "nationality" | "countryFlag"
+    > | null;
+  };
+
+  type TodayStaysActivities = Activity[];
 }
