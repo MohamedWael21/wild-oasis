@@ -6,7 +6,7 @@ Internal Management Dashboard for manage hotel bookings, cabins, and check in an
 
 First clone repo the run the following commands:
 
-```javascript
+```bash
   npm install
   npm build
   npm start
